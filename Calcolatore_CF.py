@@ -55,6 +55,6 @@ def compilatore(nome):#inserire il nome della persona a cui fare CF
 	
 
 #compilatore('nome') # decommentare e sostituire 'nome' con nome della persona di cui si vuole il CF
-print(CF) #per stampare il CF
+#print(CF) #per stampare il CF
 			
 
