@@ -52,10 +52,10 @@ def compilatore(nome):#inserire il nome della persona a cui fare CF
 		else:
 			CF += dati_persona[3][:2]
 		
-		with open("https://raw.githubusercontent.com/FloraMarSS/Python/main/comuni_m.csv",newline="") as comuni_m:
+		with open("https://raw.githubusercontent.com/FloraMarSS/Python/main/comuni_m.csv",newline="") as comuni_m: #apre e salva il file csv come "comuni_m"
 			lettore = csv.reader(comuni_m, delimiter = ";")
-			codice_città = str([riga[0] for riga in lettore if riga[1] == dati_persona[4]])
-			codice_città = codice_città.strip("[]'")
+			codice_città = str([riga[0] for riga in lettore if riga[1] == dati_persona[4]]) #cerca tra le colonne la riga corrispondente a luogo inserito
+			codice_città = codice_città.strip("[]'") #toglie parentesi quadre e apici dal codice
 		CF += codice_città
 		return CF
 				
