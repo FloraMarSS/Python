@@ -52,7 +52,7 @@ def compilatore(nome):#inserire il nome della persona a cui fare CF
 		else:
 			CF += dati_persona[3][:2]
 		
-		with open("./comuni_m.csv",newline="") as comuni_m:
+		with open("https://raw.githubusercontent.com/FloraMarSS/Python/main/comuni_m.csv",newline="") as comuni_m:
 			lettore = csv.reader(comuni_m, delimiter = ";")
 			codice_città = str([riga[0] for riga in lettore if riga[1] == dati_persona[4]])
 			codice_città = codice_città.strip("[]'")
