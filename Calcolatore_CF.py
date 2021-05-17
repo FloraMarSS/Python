@@ -58,6 +58,30 @@ def compilatore(nome):#inserire il nome della persona a cui fare CF
 			codice_città = codice_città.strip("[]'") #toglie parentesi quadre e apici dal codice
 		CF += codice_città
 		return CF
+		last = open("./ultima_lettera.csv",newline="")
+		lettore = csv.reader(last,delimiter =";")
+		lettore = [riga for riga in lettore]#lettore è iterativo adesso
+		somma = 0
+		CF_p = CF[::2]#questa stinga contiene solo le posizioni pari
+		CF_d = CF[1::2] #questa stinga contiene solo le posizioni dispari
+		for lettere in CF_p:
+			print(lettere)
+			for riga in lettore:
+				if riga[2] == lettere:
+					valore = int(riga[3])
+					somma += valore
+		for lettere in CF_d:
+			print(lettere)
+		for riga in lettore:
+			if riga[0] == lettere:
+				valore = int(riga[1])
+				somma += valore
+		resto = int(math.remainder(somma,26))
+		for riga in lettore:
+			if riga[4] == str(resto):
+				CIN = str(riga[5])
+				CF += CIN
+		return CF
 				
 				
 	
