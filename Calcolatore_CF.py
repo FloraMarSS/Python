@@ -58,7 +58,7 @@ def compilatore(nome):#inserire il nome della persona a cui fare CF
 			codice_città = codice_città.strip("[]'") #toglie parentesi quadre e apici dal codice
 		CF += codice_città
 		return CF
-		last = open("./ultima_lettera.csv",newline="")
+		last = open("https://raw.githubusercontent.com/FloraMarSS/Python/Codice_completo_NoWorking/ultima_lettera.csv",newline="")
 		lettore = csv.reader(last,delimiter =";")
 		lettore = [riga for riga in lettore]#lettore è iterativo adesso
 		somma = 0
