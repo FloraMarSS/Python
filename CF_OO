@@ -1,0 +1,16 @@
+from datetime import datetime
+    
+class Persona:
+	
+	def __init__(self,nome, cognome, sesso, data, luogo):
+		self.nome = nome
+		self.cognome = cognome
+		self.sesso = sesso
+		data = datetime.strptime(data,'%d/%m/%Y') #Trasformazione della data da stringa
+		self.data = datetime.date(data) #la data di nascita è fornita in notazione americana (anno/mese/giorno)
+		self.luogo = luogo
+	
+	def eta(self,anno = datetime.now().year): #calcolo di età, con valore predefinito anno corrente
+		anno_nascita = self.data.year
+		self.eta = anno - anno_nascita
+		return self.eta
