@@ -18,7 +18,7 @@ class Persona:
 		self.eta = anno - anno_nascita
 		return self.eta
 	
-		def codice_fiscale(self):
+	def codice_fiscale(self):
 		CF = "" #è la stringa che conterrà il nostro codice fiscale
 		vocali = 'AEIOU'
 		mese_lettera = {
