@@ -1,4 +1,7 @@
 from datetime import datetime
+import csv
+import math
+import requests
     
 class Persona:
 	
@@ -14,3 +17,70 @@ class Persona:
 		anno_nascita = self.data.year
 		self.eta = anno - anno_nascita
 		return self.eta
+	
+		def codice_fiscale(self):
+		CF = "" #è la stringa che conterrà il nostro codice fiscale
+		vocali = 'AEIOU'
+		mese_lettera = {
+			'01':'A','02':'B','03':'C','04':'D','05':'E',
+			'06':'H','07':'L','08':'M','09':'P',
+			'10':'R','11':'S','12':'T'
+			}
+		comuni_URL = "https://raw.githubusercontent.com/FloraMarSS/Python/main/comuni_m.csv"
+		last_url = "https://raw.githubusercontent.com/FloraMarSS/Python/Codice_completo_NoWorking/ultima_lettera.csv"
+		for lettere in self.cognome:#itera per lettere del cognome 
+			if lettere not in vocali:#esclusione vocali
+				CF += lettere
+				if len(CF)==3:#Quando prende le prime 3 consonanti, si ferma
+					break
+		for lettere in self.nome:#itera per le lettere del nome 
+			if lettere not in vocali:#esclusione vocali
+				CF += lettere
+			if len(CF)==7: #dovendo prendere la prima, la terza e la 4, lo fermo a 7 consonanti
+				CF = CF[:4] + CF[5:] #per eliminare la seconda consonante
+				break
+		#self.data_nascita = datetime.date(data_nascita).strftime("%d/%m/%Y")
+		data_nascita = self.data_nascita.strftime("%d/%m/%Y")
+		anno_nascita = data_nascita[-2:] #le ultime 2 cifre dell'anno di nascita 
+		CF += anno_nascita
+		for mesi in mese_lettera.keys():#cerca nel dizionario delle corrispondenze mese_lettera, il mese di nascita indicato
+			if mesi == data_nascita[3:5]:
+				CF += mese_lettera[mesi]
+		if self.sesso == 'F': #aggiunge 40 se sesso è femminile
+			giorno = int(data_nascita[:2])
+			giorno += 40
+			CF += str(giorno)
+		else:
+			CF += data_nascita[:2]
+		with requests.Session() as s:
+			download = s.get(comuni_URL)
+			comuni_m = [line.decode('utf-8') for line in download.iter_lines() if line]
+			lettore = csv.reader(comuni_m, delimiter = ";")
+			for row in lettore:
+				codice_città = str([riga[0] for riga in lettore if riga[1] == self.luogo_nascita]) #cerca tra le colonne la riga corrispondente a luogo inserito
+				codice_città = codice_città.strip("[]'") #toglie parentesi quadre e apici dal codice
+		CF += codice_città
+		with requests.Session() as t:
+			 downloads = t.get(last_url)
+			 last = [line.decode('utf-8') for line in downloads.iter_lines() if line]
+			 lettore = csv.reader(last,delimiter =";")
+			 lettore = [riga for riga in lettore]#lettore è iterativo adesso
+		somma = 0
+		CF_p = CF[::2]
+		CF_d = CF[1::2]
+		for lettere in CF_p:
+			for riga in lettore:
+				if riga[2] == lettere:
+					valore = int(riga[3])
+		somma += valore
+		for lettere in CF_d:
+			for riga in lettore:
+				if riga[0] == lettere:
+					valore = int(riga[1])
+		somma += valore
+		resto = int(math.remainder(somma,26))
+		for riga in lettore:
+			if riga[4] == str(resto):
+				CIN = str(riga[5])
+		CF += CIN
+		return CF
