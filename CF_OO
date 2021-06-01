@@ -5,18 +5,17 @@ import requests
     
 class Persona:
 	
-	def __init__(self,nome, cognome, sesso, data, luogo):
-		self.nome = nome
-		self.cognome = cognome
-		self.sesso = sesso
-		data = datetime.strptime(data,'%d/%m/%Y') #Trasformazione della data da stringa
-		self.data = datetime.date(data) #la data di nascita è fornita in notazione americana (anno/mese/giorno)
-		self.luogo = luogo
+	def __init__(self,nome, cognome, sesso, data_nascita, luogo_nascita):
+		self.nome = nome.upper()
+		self.cognome = cognome.upper()
+		self.sesso = sesso.upper()
+		data_nascita = datetime.strptime(data_nascita,'%d/%m/%Y') #Trasformazione della data da stringa
+		self.data_nascita = datetime.date(data_nascita) #la data di nascita è fornita in notazione americana (anno/mese/giorno)
+		self.luogo_nascita = luogo_nascita.upper()
 	
 	def eta(self,anno = datetime.now().year): #calcolo di età, con valore predefinito anno corrente
-		anno_nascita = self.data.year
-		self.eta = anno - anno_nascita
-		return self.eta
+		anno_nascita = self.data_nascita.year
+		return anno - anno_nascita
 	
 	def codice_fiscale(self):
 		CF = "" #è la stringa che conterrà il nostro codice fiscale
@@ -39,7 +38,6 @@ class Persona:
 			if len(CF)==7: #dovendo prendere la prima, la terza e la 4, lo fermo a 7 consonanti
 				CF = CF[:4] + CF[5:] #per eliminare la seconda consonante
 				break
-		#self.data_nascita = datetime.date(data_nascita).strftime("%d/%m/%Y")
 		data_nascita = self.data_nascita.strftime("%d/%m/%Y")
 		anno_nascita = data_nascita[-2:] #le ultime 2 cifre dell'anno di nascita 
 		CF += anno_nascita
